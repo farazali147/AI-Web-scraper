@@ -1,95 +1,277 @@
-AI Web Scraper 🤖
+# AI Web Scraper
 
-This is a powerful data extraction tool that transforms any website into structured, queryable data using natural language. It's a "No-Code" solution that replaces complex scraper scripts and data management skills with a simple, human-readable prompt.
+An AI-powered web scraping tool that extracts structured data from websites using natural-language instructions.
 
-This project uses a Bright Data proxy to bypass blocks and CAPTCHAs, and then leverages a local Ollama model (llama3.1) to parse the clean HTML, turning unstructured content into clean JSON, tables, and downloadable reports.
+The application combines Selenium-based web scraping with a Bright Data proxy for accessing dynamic websites. The extracted HTML is processed by a local Llama 3.1 model running through Ollama, which converts the content into structured JSON based on the user's prompt.
 
-(Remember to take a screenshot of your app, upload it to a site like Imgur, and paste the link here)
+The extracted data can be displayed in an interactive table and exported as CSV, Excel, or PDF.
 
-✨ Features
+## Features
 
-Intelligent Scraping: Uses a Bright Data proxy to handle dynamic JavaScript-heavy sites, solve CAPTCHAs, and automatically retry on errors.
+### Web Scraping
 
-AI-Powered Parsing: Leverages a local Ollama model to understand natural language prompts. You can ask for data just like you'd ask a person:
+* Scrape content from user-provided URLs.
+* Support for JavaScript-heavy websites through Selenium.
+* Bright Data proxy integration for reliable web access.
+* Automatic retry handling for failed requests.
 
-"Extract all hotel names, prices, and ratings."
+### AI-Powered Data Extraction
 
-"Get me a table of all product names and their prices from this page."
+Users can describe the information they want using natural language.
 
-Structured Data Output: The AI returns clean JSON, which is instantly displayed in an interactive table.
+Examples:
 
-Multiple Export Options: Download your extracted data with a single click as a .csv, .xlsx (Excel), or .pdf file.
+```text
+Extract all hotel names, prices, and ratings.
+```
 
-Professional UI: A clean, modern, dark-mode interface built with Streamlit, complete with custom themes and styles.
+```text
+Get all product names and their prices from this page.
+```
 
-🛠️ Tech Stack
+```text
+Extract all quotes and their authors.
+```
 
-Frontend: Streamlit
+The application sends the scraped content and extraction instructions to a local Llama 3.1 model, which returns structured JSON.
 
-Backend: Python
+### Structured Output
 
-Scraping: Selenium, Bright Data (Proxy)
+Extracted information is converted into structured data and displayed in an interactive table.
 
-AI / LLM: Ollama (running llama3.1), LangChain
+Supported export formats:
 
-Data Handling: Pandas, ReportLab (for PDF), openpyxl (for Excel)
+* CSV
+* XLSX
+* PDF
 
-🚀 How to Run This Project
+### User Interface
 
-1. Prerequisites
+The application uses Streamlit to provide a simple interface for:
 
-Python 3.10+
+1. Entering a website URL
+2. Scraping the website
+3. Providing a natural-language extraction prompt
+4. Viewing the extracted data
+5. Downloading the results
 
-Ollama installed and running locally.
+## Architecture
 
-2. Setup & Installation
+```text
+User
+  |
+  v
+Streamlit Interface
+  |
+  v
+Selenium Web Scraper
+  |
+  v
+Bright Data Proxy
+  |
+  v
+Website HTML
+  |
+  v
+Content Processing
+  |
+  v
+Ollama - Llama 3.1
+  |
+  v
+Structured JSON
+  |
+  v
+Pandas DataFrame
+  |
+  +------> Interactive Table
+  |
+  +------> CSV
+  |
+  +------> XLSX
+  |
+  +------> PDF
+```
 
-1. Clone the repository:
+## Tech Stack
 
-git clone [https://github.com/YOUR_USERNAME/AI-web-scraper.git](https://github.com/YOUR_USERNAME/AI-web-scraper.git)
+| Component            | Technology  |
+| -------------------- | ----------- |
+| Frontend / UI        | Streamlit   |
+| Backend              | Python      |
+| Web Scraping         | Selenium    |
+| Proxy Infrastructure | Bright Data |
+| LLM                  | Llama 3.1   |
+| Local Model Runtime  | Ollama      |
+| LLM Framework        | LangChain   |
+| Data Processing      | Pandas      |
+| Excel Export         | openpyxl    |
+| PDF Export           | ReportLab   |
+
+## Project Structure
+
+```text
+AI-web-scraper/
+│
+├── main.py
+├── requirements.txt
+├── .env
+├── README.md
+└── ...
+```
+
+## Prerequisites
+
+* Python 3.10 or later
+* Ollama
+* A Bright Data proxy configuration
+* Chrome or another supported browser for Selenium
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/AI-web-scraper.git
 cd AI-web-scraper
+```
 
+Install the required Python packages:
 
-2. Install dependencies:
-
+```bash
 pip install -r requirements.txt
+```
 
+## Environment Configuration
 
-3. Set up your Environment:
-Create a file named .env in the project root and add your Bright Data URL:
+Create a `.env` file in the project root:
 
-BRIGHT_DATA_URL="https"//brd-customer-xxxx:yyyy@brd.superproxy.io:9515"
+```env
+BRIGHT_DATA_URL="https://brd-customer-xxxx:yyyy@brd.superproxy.io:9515"
+```
 
+Replace the value with your Bright Data proxy URL.
 
-4. Pull the AI model:
+## Set Up Ollama
 
+Make sure Ollama is installed and running.
+
+Pull the Llama 3.1 model:
+
+```bash
 ollama pull llama3.1
+```
 
+Start the Ollama server if it is not already running:
 
-3. Running the App
-
-1. Start the AI Server:
-In one terminal, start the Ollama server:
-
+```bash
 ollama serve
+```
 
+## Run the Application
 
-2. Run the Streamlit App:
-In a second terminal, run the app:
+Start the Streamlit application:
 
+```bash
 streamlit run main.py
+```
 
+The application will be available at:
 
-The app will open in your browser at http://localhost:8501.
+```text
+http://localhost:8501
+```
 
-How to Use
+## Usage
 
-Enter a URL from a website you want to scrape (e.g., an Amazon search page, MakeMyTrip, or quotes.toscrape.com).
+### 1. Enter a URL
 
-Click "Scrape Website" and wait for the success message.
+Provide the URL of the website you want to extract data from.
 
-Enter a prompt describing the data you want (e.g., "Get all quotes and their authors").
+Examples include:
 
-Click "Parse Content" and wait for the AI to analyze the data.
+* Product listing pages
+* Hotel listing pages
+* Travel websites
+* News pages
+* Public websites containing structured or semi-structured information
 
-View your data in the table and use the download buttons to get your report.
+### 2. Scrape the Website
+
+Click **Scrape Website**.
+
+Selenium loads the page and retrieves the relevant HTML content through the configured Bright Data proxy.
+
+### 3. Provide an Extraction Prompt
+
+Describe the information you want in natural language.
+
+For example:
+
+```text
+Extract the product name, price, rating, and availability.
+```
+
+### 4. Parse the Content
+
+Click **Parse Content**.
+
+The local Llama 3.1 model analyzes the scraped content and generates structured JSON based on the requested fields.
+
+### 5. Review and Export
+
+The extracted data is displayed as a table.
+
+Results can be downloaded as:
+
+* CSV
+* Excel
+* PDF
+
+## Example Workflow
+
+```text
+Website URL
+     |
+     v
+Selenium
+     |
+     v
+Scraped HTML
+     |
+     v
+Natural Language Prompt
+     |
+     v
+Llama 3.1
+     |
+     v
+Structured JSON
+     |
+     v
+DataFrame
+     |
+     +---- CSV
+     +---- XLSX
+     +---- PDF
+```
+
+## Configuration
+
+The primary configuration required by the application is the Bright Data proxy URL.
+
+Ollama is configured to run the Llama 3.1 model locally.
+
+This allows the extraction pipeline to perform LLM inference locally rather than relying on a hosted LLM API.
+
+## Notes
+
+* Scraping behavior depends on the target website.
+* Some websites may restrict automated access.
+* Results generated by the LLM should be validated when accuracy is important.
+* Do not use the application to access private or unauthorized content.
+* Keep proxy credentials and other secrets in environment variables rather than committing them to the repository.
+
+## License
+
+Add your preferred license here.
